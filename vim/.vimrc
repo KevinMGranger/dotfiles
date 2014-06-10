@@ -23,18 +23,24 @@
 " }}}
 
 
-" Init {{{
-set nocompatible               " be iMproved
-filetype off                   " required for vundle
+" NeoBundle Init {{{
+if has('vim_starting')
+	set nocompatible               " Be iMproved
 
+	" Required:
+	set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" Required:
+call neobundle#begin(expand('~/.vim/bundle/'))
 
-" let Vundle manage Vundle
-Bundle 'gmarik/vundle'
-
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
 " }}}
+
+
+NeoBundle "pangloss/vim-javascript"
 
 
 " Aesthetics {{{
@@ -42,7 +48,7 @@ Bundle 'gmarik/vundle'
 	" Color {{{
 
 		"Solarized, the bestest colorscheme
-		Bundle 'altercation/vim-colors-solarized'
+		NeoBundle 'altercation/vim-colors-solarized'
 		syntax enable
 
 		"set background=light
@@ -64,12 +70,12 @@ Bundle 'gmarik/vundle'
 " File Management {{{
 
 "NERDtree, a tree explorer plugin
-Bundle 'scrooloose/nerdtree'	
+NeoBundle 'scrooloose/nerdtree'	
 nmap <leader>e :NERDTreeToggle<CR>
 let NERDTreeHijackNetrw=0
 
 "ctrlp: Full path fuzzy file, buffer, mru, tag, ... finder
-Bundle 'kien/ctrlp.vim'		
+NeoBundle 'kien/ctrlp.vim'		
 
 nmap <leader>p :CtrlPBuffer<CR>
 let g:ctrlp_map = '<Leader>t'
@@ -85,23 +91,23 @@ let g:ctrlp_switch_buffer = 0
 " Language {{{
 
 "syntastic: Syntax checking hacks
-Bundle 'scrooloose/syntastic'	
+NeoBundle 'scrooloose/syntastic'	
 
 "inline_edit: Edit code that's embedded within other code
-Bundle 'AndrewRadev/inline_edit.vim'
+NeoBundle 'AndrewRadev/inline_edit.vim'
 nnoremap <Leader>i :InlineEdit<CR>
 vnoremap <Leader>i :InlineEdit<CR>
 
 " Web {{{
 
 "closetag: Functions and mappings to close open HTML/XML tags 
-Bundle 'closetag.vim'		
+NeoBundle 'closetag.vim'		
 
 "css-color: colorize css
-Bundle 'ap/vim-css-color'	
+NeoBundle 'ap/vim-css-color'	
 
 "sparkup: easier html
-Bundle 'tristen/vim-sparkup'
+NeoBundle 'tristen/vim-sparkup'
 " }}}
 " }}}
 
@@ -109,11 +115,11 @@ Bundle 'tristen/vim-sparkup'
 " Navigation {{{
 
 "vim-seek: make navigating within a line easier
-Bundle 'goldfeld/vim-seek'	
+NeoBundle 'goldfeld/vim-seek'	
 let g:seek_subst_disable = 1
 
 "easymotion: Vim motions on speed!
-Bundle 'Lokaltog/vim-easymotion'
+NeoBundle 'Lokaltog/vim-easymotion'
 
 " To move up and down logical lines instead of physical lines
 " Instead of changing the Home row keys, use the arrow keys
@@ -151,16 +157,16 @@ nmap <M-k> :bprev<CR>
 " Version Control {{{
 
 "fugitive: git integration
-Bundle 'tpope/vim-fugitive'	
+NeoBundle 'tpope/vim-fugitive'	
 nnoremap <Leader>s :Gstatus<CR>
 nnoremap <Leader>c :Gcommit<CR>
 nnoremap <Leader>d :Gdiff<CR>
 
 "gitgutter: shows a git diff in the gutter
-Bundle 'airblade/vim-gitgutter'
+NeoBundle 'airblade/vim-gitgutter'
 
 "gitv: gitk for vim
-Bundle 'gitv'
+"NeoBundle 'gitv'
 
 " }}}
 
@@ -168,26 +174,29 @@ Bundle 'gitv'
 " Session / Projects {{{
 
 "obsession: continuously updated session files
-Bundle 'tpope/vim-obsession'	
+NeoBundle 'tpope/vim-obsession'	
 
 "restore_view: restore buffer views on opening and closing
-Bundle 'restore_view.vim'
+"Bundle 'restore_view.vim'
 
 " }}}
 
 
 " Undo {{{
+
 "gundo: undo tree visualization 
-Bundle 'sjl/gundo.vim'
+NeoBundle 'sjl/gundo.vim'
 nnoremap <Leader>g :GundoToggle<CR>
 
 set undofile		"Have VIM save undo history to file and restore it on open
 set history=350		"Sets how many lines of history VIM will remember
 set undolevels=500	"Number of undo levels
+
 " }}}
 
 
 " Main Screen {{{
+
 set ruler		"Show cursor position all times
 set numberwidth=5	"Aesthetic uses only... and for displaying large line numbers
 set more		"Use more propmt -- pausing screen when too many items are displayed
@@ -205,6 +214,7 @@ else
     highlight ColorColumn ctermbg=235
     match ColorColumn /\%81v/
 endif
+
 " }}}
 
 
@@ -239,20 +249,24 @@ set matchtime=5 "How many tenths of a second to show matching paren with showmat
 " }}}
 
 
-	" Overall Window {{{
+" Overall Window {{{
 
-	"set guioptions=em	"e ensures tab bar is displayed in GUI; m ensures menu bar is displayed
-	set showcmd		"Display commands as they are typed
-	set cmdheight=1		"Set the commandbar height
-	set showtabline=2	"Display tab line even if single file opened
-	set guitablabel=%t	"Display buffer name on tab label
-	"set nohidden		"When I close a tab, remove from buffer
-	set tm=500 		"Set tooltip menu
+"set guioptions=em	"e ensures tab bar is displayed in GUI; m ensures menu bar is displayed
+set showcmd		"Display commands as they are typed
+set cmdheight=1		"Set the commandbar height
+set showtabline=2	"Display tab line even if single file opened
+set guitablabel=%t	"Display buffer name on tab label
+"set nohidden		"When I close a tab, remove from buffer
+set tm=500 		"Set tooltip menu
 
-	" }}}
+" }}}
 
 
 " Misc Editor Usability {{{
+
+NeoBundle "godlygeek/tabular"
+
+NeoBundle "nathanaelkane/vim-indent-guides"
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
@@ -278,6 +292,7 @@ endif
 "
 "endif
 " }}}
+
 " tab mode switching from Ian
 
 nmap <leader>t :set expandtab tabstop=4 shiftwidth=4 softtabstop=4<CR>
@@ -290,14 +305,13 @@ nmap <leader>m :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<CR>
 nnoremap <space> za
 vnoremap <space> zf
 
-
 " }}}
 
 
 " Vimwiki {{{
 
 " vimwiki: Personal Wiki for Vim
-Bundle 'vimwiki'
+NeoBundle 'vimwiki'
 let g:vimwiki_list = [
 			\ {'path': '~/flx/wiki'}
 			\]
@@ -305,10 +319,17 @@ let g:vimwiki_list = [
 " }}}
 
 
-" End Bundle Init {{{
-filetype plugin indent on     " required for vundle
-" or 
-" filetype plugin on          " to not use the indentation settings set by plugins
+" NeoBundle End {{{
+
+call neobundle#end()
+
+" Required:
+filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+
 " }}}
 
 
@@ -360,6 +381,7 @@ endif
 map Q gq
 
 " }}}
+
 
 
 " vim:fdm=marker
