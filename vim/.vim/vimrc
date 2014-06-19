@@ -22,7 +22,6 @@
 "Bundle 'git://git.wincent.com/command-t.git' 
 " }}}
 
-
 " NeoBundle Init {{{
 if has('vim_starting')
 	set nocompatible               " Be iMproved
@@ -40,29 +39,15 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " }}}
 
 
-NeoBundle "pangloss/vim-javascript"
-
 
 " Aesthetics {{{
 
-	" Color {{{
+" Color {{{
 
-		"Solarized, the bestest colorscheme
-		NeoBundle 'altercation/vim-colors-solarized'
-		syntax enable
+"Solarized, the bestest colorscheme
+NeoBundle 'altercation/vim-colors-solarized'
 
-		"set background=light
-		"this actually just goes off of .Xresources. So, dark is light if .Xr is light
-		set background=dark
-		"if has('gui_running')
-		"	set background=light
-		"else
-		"	set background=dark
-		"endif
-
-		colorscheme solarized
-
-	" }}}
+" }}}
 
 " }}}
 
@@ -108,7 +93,15 @@ NeoBundle 'ap/vim-css-color'
 
 "sparkup: easier html
 NeoBundle 'tristen/vim-sparkup'
+
+" JavaScript {{{
+
+NeoBundle "pangloss/vim-javascript"
+
 " }}}
+
+" }}}
+
 " }}}
 
 
@@ -134,19 +127,6 @@ noremap <silent> <Down> gj
 inoremap <silent> <Up> <C-o>gk
 inoremap <silent> <Down> <C-o>gj
 
-" emacs-like cmd keys, from Ian Langworth
-
-cnoremap <C-a>  <Home>
-cnoremap <C-b>  <Left>
-cnoremap <C-f>  <Right>
-cnoremap <C-d>  <Delete>
-cnoremap <M-b>  <S-Left>
-cnoremap <M-f>  <S-Right>
-cnoremap <M-d>  <S-right><Delete>
-cnoremap <Esc>b <S-Left>
-cnoremap <Esc>f <S-Right>
-cnoremap <Esc>d <S-right><Delete>
-cnoremap <C-g>  <C-c>
 
 " buffer stuff from Ian
 nmap <M-j> :bnext<CR>
@@ -195,25 +175,60 @@ set undolevels=500	"Number of undo levels
 " }}}
 
 
-" Main Screen {{{
+" Overall Window {{{
 
-set ruler		"Show cursor position all times
-set numberwidth=5	"Aesthetic uses only... and for displaying large line numbers
+"set guioptions=em	"e ensures tab bar is displayed in GUI; m ensures menu bar is displayed
+set showcmd		"Display commands as they are typed
+set cmdheight=1		"Set the commandbar height
+set showtabline=2	"Display tab line even if single file opened
+set guitablabel=%t	"Display buffer name on tab label
+"set nohidden		"When I close a tab, remove from buffer
+set tm=500 		"Set tooltip menu
+
+" }}}
+
+"
+" Buffer View {{{
+
+"set ruler		"Show cursor position all times
+"set numberwidth=5	"Aesthetic uses only... and for displaying large line numbers
 set more		"Use more propmt -- pausing screen when too many items are displayed
 set noautowrite		"Don't automagically write on :next
 set hidden			"Change buffer - without saving
 
 set cursorline "Highlight the current line
-"set cursorcolumn "Highlight the current column
+set cursorcolumn "Highlight the current column
 """ Highlight column 81 for old-school 80 character terminal widths
 """ The elseif hack is from http://stackoverflow.com/a/235970
 
 if exists('+colorcolumn')
-    set colorcolumn=81
+	set colorcolumn=81
 else
-    highlight ColorColumn ctermbg=235
-    match ColorColumn /\%81v/
+	highlight ColorColumn ctermbg=235
+	match ColorColumn /\%81v/
 endif
+
+set number
+
+" relativenumber {{{
+"""" relativenumber is a VIM 7.3 option
+"""" If the option doesn't exist, fall back to just absolute line numbers
+"if exists('+relativenumber')
+"    set relativenumber "Display how far away each line is from the current one by default
+"
+""Switch to absolute line numbers whenever Vim loses focus
+"    autocmd FocusLost * :set number
+"    autocmd FocusGained * :set relativenumber
+"
+""Use absolute line numbers when in insert mode and relative numbers when in normal mode
+"    autocmd InsertEnter * :set number
+"    autocmd InsertLeave * :set relativenumber
+"
+"else
+"    set number "Show absolute line numbers
+"
+"endif
+" }}}
 
 " }}}
 
@@ -227,6 +242,20 @@ set wildmode=list:longest,full
 "Turn on wild mode huge list
 set wildchar=<TAB>
 "Path/file expansion in colon mode
+
+" emacs-like cmd keys, from Ian Langworth
+
+cnoremap <C-a>  <Home>
+cnoremap <C-b>  <Left>
+cnoremap <C-f>  <Right>
+cnoremap <C-d>  <Delete>
+cnoremap <M-b>  <S-Left>
+cnoremap <M-f>  <S-Right>
+cnoremap <M-d>  <S-right><Delete>
+cnoremap <Esc>b <S-Left>
+cnoremap <Esc>f <S-Right>
+cnoremap <Esc>d <S-right><Delete>
+cnoremap <C-g>  <C-c>
 
 " }}}
 
@@ -249,19 +278,6 @@ set matchtime=5 "How many tenths of a second to show matching paren with showmat
 " }}}
 
 
-" Overall Window {{{
-
-"set guioptions=em	"e ensures tab bar is displayed in GUI; m ensures menu bar is displayed
-set showcmd		"Display commands as they are typed
-set cmdheight=1		"Set the commandbar height
-set showtabline=2	"Display tab line even if single file opened
-set guitablabel=%t	"Display buffer name on tab label
-"set nohidden		"When I close a tab, remove from buffer
-set tm=500 		"Set tooltip menu
-
-" }}}
-
-
 " Misc Editor Usability {{{
 
 NeoBundle "godlygeek/tabular"
@@ -270,28 +286,9 @@ NeoBundle "nathanaelkane/vim-indent-guides"
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
-  set mouse=a
+	set mouse=a
 endif
 
-" relativenumber {{{
-"""" relativenumber is a VIM 7.3 option
-"""" If the option doesn't exist, fall back to just absolute line numbers
-"if exists('+relativenumber')
-"    set relativenumber "Display how far away each line is from the current one by default
-"
-""Switch to absolute line numbers whenever Vim loses focus
-"    autocmd FocusLost * :set number
-"    autocmd FocusGained * :set relativenumber
-"
-""Use absolute line numbers when in insert mode and relative numbers when in normal mode
-"    autocmd InsertEnter * :set number
-"    autocmd InsertLeave * :set relativenumber
-"
-"else
-"    set number "Show absolute line numbers
-"
-"endif
-" }}}
 
 " tab mode switching from Ian
 
@@ -350,9 +347,9 @@ map <C-l> <C-W>l<C-W>_
 
 
 " Powerline {{{
-set rtp+=~/.local/lib/python3.3/site-packages/powerline/bindings/vim
-set laststatus=2
-set noshowmode
+set laststatus=2 " always show powelrin
+set noshowmode   " hide regular mode line
+" reduce terminal escape delay
 if ! has('gui_running')
 	set ttimeoutlen=10
 	augroup FastEscape
@@ -367,14 +364,14 @@ endif
 " Where do these go? {{{
 
 " Not sure, really. gvim versus console vim solarized solution thingy maybe?
-hi Normal ctermbg=none
+"hi Normal ctermbg=none
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
 if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+	command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+				\ | wincmd p | diffthis
 endif
 
 " Don't use Ex mode, use Q for formatting
@@ -383,5 +380,21 @@ map Q gq
 " }}}
 
 
+" Solarized Post-NeoBundle {{{
+syntax enable
+
+"set background=light
+"this actually just goes off of .Xresources. So, dark is light if .Xr is light
+set background=dark
+"if has('gui_running')
+"	set background=light
+"else
+"	set background=dark
+"endif
+
+let g:solarized_termcolors=16
+
+colorscheme solarized
+" }}}
 
 " vim:fdm=marker
