@@ -1,0 +1,215 @@
+"" VIMRC
+"" Author: Kevin M Granger
+"
+" Based on / Inspired by / Stolen from:
+" 	Stanley Chan		https://github.com/Happy-Dude/dotfiles/tree/master/vim
+" 	Ian Langworth		http://statico.github.io/vim.html
+
+
+"" TODO: {{{
+"
+" LOOK INTO:
+" showmarks
+" check out command-t versus ctrlp versus fuzzyfinder
+"
+" Bundles from sample vundle .vimrc:
+"Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+"" vim-scripts repos
+"Bundle 'L9'
+"Bundle 'FuzzyFinder'
+"Bundle 'rails.vim'
+"" non github repos
+"Bundle 'git://git.wincent.com/command-t.git' 
+" }}}
+
+" NeoBundle Init {{{
+if has('vim_starting')
+	set nocompatible               " Be iMproved
+
+	" Required:
+	set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+" Required:
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
+" }}}
+
+
+
+" Aesthetics {{{
+
+" Color {{{
+
+"Solarized, the bestest colorscheme
+NeoBundle 'altercation/vim-colors-solarized'
+
+" }}}
+
+" }}}
+
+
+" File Management {{{
+
+"NERDtree, a tree explorer plugin
+NeoBundle 'scrooloose/nerdtree'	
+nmap <leader>e :NERDTreeToggle<CR>
+let NERDTreeHijackNetrw=0
+
+"ctrlp: Full path fuzzy file, buffer, mru, tag, ... finder
+NeoBundle 'kien/ctrlp.vim'		
+
+nmap <leader>p :CtrlPBuffer<CR>
+let g:ctrlp_map = '<Leader>t'
+let g:ctrlp_match_window_bottom = 0
+let g:ctrlp_match_window_reversed = 0
+let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_dotfiles = 0
+let g:ctrlp_switch_buffer = 0
+" }}}
+
+
+" Language {{{
+
+"syntastic: Syntax checking hacks
+NeoBundle 'scrooloose/syntastic'	
+
+"inline_edit: Edit code that's embedded within other code
+NeoBundle 'AndrewRadev/inline_edit.vim'
+nnoremap <Leader>i :InlineEdit<CR>
+vnoremap <Leader>i :InlineEdit<CR>
+
+" Web {{{
+
+"closetag: Functions and mappings to close open HTML/XML tags 
+NeoBundle 'closetag.vim'		
+
+"css-color: colorize css
+NeoBundle 'ap/vim-css-color'	
+
+"sparkup: easier html
+NeoBundle 'tristen/vim-sparkup'
+
+" JavaScript {{{
+
+NeoBundle "pangloss/vim-javascript"
+
+" }}}
+
+" }}}
+
+" }}}
+
+
+" Navigation {{{
+
+"vim-seek: make navigating within a line easier
+NeoBundle 'goldfeld/vim-seek'	
+let g:seek_subst_disable = 1
+
+"easymotion: Vim motions on speed!
+NeoBundle 'Lokaltog/vim-easymotion'
+
+" To move up and down logical lines instead of physical lines
+" Instead of changing the Home row keys, use the arrow keys
+nnoremap <Down> gj
+nnoremap <Up> gk
+vnoremap <Down> gj
+vnoremap <Up> gk
+inoremap <Down> <C-o>gj
+inoremap <Up> <C-o>gk
+noremap <silent> <Up> gk
+noremap <silent> <Down> gj
+inoremap <silent> <Up> <C-o>gk
+inoremap <silent> <Down> <C-o>gj
+
+
+" buffer stuff from Ian
+nmap <M-j> :bnext<CR>
+nmap <M-k> :bprev<CR>
+" }}}
+
+
+" Version Control {{{
+
+"fugitive: git integration
+NeoBundle 'tpope/vim-fugitive'	
+nnoremap <Leader>s :Gstatus<CR>
+nnoremap <Leader>c :Gcommit<CR>
+nnoremap <Leader>d :Gdiff<CR>
+
+"gitgutter: shows a git diff in the gutter
+NeoBundle 'airblade/vim-gitgutter'
+
+"gitv: gitk for vim
+"NeoBundle 'gitv'
+
+" }}}
+
+
+
+" }}}
+
+
+" Vimwiki {{{
+
+" vimwiki: Personal Wiki for Vim
+NeoBundle 'vimwiki'
+let g:vimwiki_list = [
+			\ {'path': '~/flx/wiki'}
+			\]
+
+" }}}
+
+
+" NeoBundle End {{{
+
+call neobundle#end()
+
+" Required:
+filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+
+" }}}
+
+
+" reduce terminal escape delay
+if ! has('gui_running')
+	set ttimeoutlen=10
+	augroup FastEscape
+		autocmd!
+		au InsertEnter * set timeoutlen=0
+		au InsertLeave * set timeoutlen=0
+	augroup END
+endif
+" }}}
+
+
+" Where do these go? {{{
+
+" Not sure, really. gvim versus console vim solarized solution thingy maybe?
+"hi Normal ctermbg=none
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+if !exists(":DiffOrig")
+	command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+				\ | wincmd p | diffthis
+endif
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" }}}
+
+
+" vim:fdm=marker
+
