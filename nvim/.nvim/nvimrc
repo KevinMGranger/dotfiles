@@ -1,0 +1,190 @@
+call plug#begin('~/.nvim/plugged')
+
+" Navigation {{{
+
+" To move up and down logical lines instead of physical lines
+" Instead of changing the Home row keys, use the arrow keys
+nnoremap <Down> gj
+nnoremap <Up> gk
+vnoremap <Down> gj
+vnoremap <Up> gk
+inoremap <Down> <C-o>gj
+inoremap <Up> <C-o>gk
+noremap <silent> <Up> gk
+noremap <silent> <Down> gj
+inoremap <silent> <Up> <C-o>gk
+inoremap <silent> <Down> <C-o>gj
+" }}}
+
+" Version Control {{{
+
+"fugitive: git integration
+Plug 'tpope/vim-fugitive'	
+nnoremap <Leader>s :Gstatus<CR>
+nnoremap <Leader>c :Gcommit<CR>
+nnoremap <Leader>d :Gdiff<CR>
+
+"gitgutter: shows a git diff in the gutter
+Plug 'airblade/vim-gitgutter'
+" }}}
+"
+" Session / Projects {{{
+
+"obsession: continuously updated session files
+Plug 'tpope/vim-obsession'	
+
+" }}}
+
+" Undo {{{
+
+"gundo: undo tree visualization 
+Plug 'sjl/gundo.vim'
+nnoremap <Leader>g :GundoToggle<CR>
+
+set undofile		"Have VIM save undo history to file and restore it on open
+set history=350		"Sets how many lines of history VIM will remember
+set undolevels=500	"Number of undo levels
+
+" }}}
+
+" Overall Window {{{
+
+set showcmd		"Display commands as they are typed
+set cmdheight=1		"Set the commandbar height
+
+" }}}
+"
+" Buffer View {{{
+
+set cursorline		"Highlight the current line
+set cursorcolumn 	"Highlight the current column
+
+""" Highlight column 81 for old-school 80 character terminal widths
+""" The elseif hack is from http://stackoverflow.com/a/235970
+
+if exists('+colorcolumn')
+	set colorcolumn=81
+else
+	highlight ColorColumn ctermbg=235
+	match ColorColumn /\%81v/
+endif
+
+set number
+
+" }}}
+
+" Command-Line {{{
+
+set wildmenu "Turn on wild menu
+set wildignore=*.dll,*.o,*.obj,*.bak,*.exe,*.pyc,*.jpg,*.gif,*.png
+"Ignore these list file extensions
+set wildmode=list:longest,full
+"Turn on wild mode huge list
+set wildchar=<TAB>
+"Path/file expansion in colon mode
+
+" emacs-like cmd keys, from Ian Langworth
+
+cnoremap <C-a>  <Home>
+cnoremap <C-b>  <Left>
+cnoremap <C-f>  <Right>
+cnoremap <C-d>  <Delete>
+cnoremap <M-b>  <S-Left>
+cnoremap <M-f>  <S-Right>
+cnoremap <M-d>  <S-right><Delete>
+cnoremap <Esc>b <S-Left>
+cnoremap <Esc>f <S-Right>
+cnoremap <Esc>d <S-right><Delete>
+cnoremap <C-g>  <C-c>
+
+" }}}
+
+" Search {{{
+
+set ignorecase	"Ignore case when searching
+set smartcase	"UNLESS there are caps, in which case, be sensitive.
+"set infercase "Case inferred by default
+set hlsearch	"Highlight search things
+nmap \q :noh<CR>
+set incsearch	"Highlight as I type
+
+set showmatch "Show matching brackets
+set matchtime=7 "How many tenths of a second to show matching paren with showmatch set
+
+Plug 'mileszs/ack.vim'
+" }}}
+
+" Misc Editor Usability {{{
+
+Plug 'nathanaelkane/vim-indent-guides'
+
+Plug 'junegunn/vim-easy-align'
+
+set mouse=a
+
+" tab mode switching from Ian
+
+nmap <leader>t :set expandtab tabstop=4 shiftwidth=4 softtabstop=4<CR>
+nmap <leader>T :set noexpandtab tabstop=8 shiftwidth=8 softtabstop=8<CR>
+nmap <leader>m :set expandtab tabstop=2 shiftwidth=2 softtabstop=2<CR>
+
+"foldin'
+
+nnoremap <space> za
+vnoremap <space> zf
+
+
+Plug 'benekastah/neomake'
+
+" }}}
+
+" Window Management {{{
+
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+map <C-J> <C-W>j<C-W>_
+map <C-k> <C-W>k<C-W>_
+map <C-h> <C-W>h<C-W>_
+map <C-l> <C-W>l<C-W>_
+
+nmap <M-j> :bnext<CR>
+nmap <M-k> :bprev<CR>
+
+" }}}
+
+" Status Line {{{
+set laststatus=2 " always show powelrin
+set ruler		"Show cursor position all times
+set more		"Use more propmt -- pausing screen when too many items are displayed
+set noautowrite		"Don't automagically write on :next
+set hidden			"Change buffer - without saving
+" }}}
+
+Plug 'altercation/vim-colors-solarized'
+
+call plug#end()
+
+" Solarized {{{
+
+syntax enable
+
+"set background=light
+"this actually just goes off of .Xresources. So, dark is light if .Xr is light
+set background=light
+"if has('gui_running')
+"	set background=light
+"else
+"	set background=dark
+"endif
+
+let g:solarized_termcolors=16
+
+call togglebg#map("<F5>")
+
+colorscheme solarized
+" }}}
+
+" vim:fdm=marker
