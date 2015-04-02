@@ -111,8 +111,8 @@ set incsearch	"Highlight as I type
 set showmatch "Show matching brackets
 set matchtime=7 "How many tenths of a second to show matching paren with showmatch set
 
+Plug 'mileszs/ack.vim'
 " }}}
-
 
 " Misc Editor Usability {{{
 
@@ -138,7 +138,6 @@ Plug 'benekastah/neomake'
 
 " }}}
 
-
 " Window Management {{{
 
 map <C-j> <C-W>j
@@ -156,7 +155,7 @@ nmap <M-k> :bprev<CR>
 
 " }}}
 
-" Powerline {{{
+" Status Line {{{
 set laststatus=2 " always show powelrin
 set ruler		"Show cursor position all times
 set more		"Use more propmt -- pausing screen when too many items are displayed
@@ -164,12 +163,17 @@ set noautowrite		"Don't automagically write on :next
 set hidden			"Change buffer - without saving
 " }}}
 
-" Solarized Post-Plug {{{
+Plug 'altercation/vim-colors-solarized'
+
+call plug#end()
+
+" Solarized {{{
+
 syntax enable
 
 "set background=light
 "this actually just goes off of .Xresources. So, dark is light if .Xr is light
-set background=dark
+set background=light
 "if has('gui_running')
 "	set background=light
 "else
@@ -178,9 +182,9 @@ set background=dark
 
 let g:solarized_termcolors=16
 
+call togglebg#map("<F5>")
+
 colorscheme solarized
 " }}}
 
 " vim:fdm=marker
-
-call plug#end()

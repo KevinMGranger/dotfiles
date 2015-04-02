@@ -1,1 +1,2 @@
-vim/bundles
+vim/.vim/plugges
+nvim/.nvim/plugged
